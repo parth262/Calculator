@@ -76,6 +76,9 @@ public class MainActivity extends AppCompatActivity {
 
                 if(lastNumeric && !stateError){
                     Button button = (Button) v;
+                    if(output1.getText().toString() != ""){
+                        output2.setText(output1.getText().toString());
+                    }
                     output2.append(button.getText());
                     lastNumeric = false;
                     lastDot = false;
@@ -101,11 +104,23 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.delete).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                output1.setText("");
-                output2.setText("");
-                lastNumeric = false;
-                lastDot = false;
-                stateError = false;
+
+                String a = output2.getText().toString();
+                if(a.length() > 1){
+                    a = a.substring(0, a.length()-1);
+                    output2.setText(a);
+                }
+                else{
+                    output1.setText("");
+                    output2.setText("");
+                    lastNumeric = false;
+                    lastDot = false;
+                    stateError = false;
+                }
+               /* output1.setText("");
+                output2.setText("");*/
+
+
             }
         });
 
