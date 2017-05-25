@@ -6,231 +6,139 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import net.objecthunter.exp4j.Expression;
+import net.objecthunter.exp4j.ExpressionBuilder;
+
 import static android.R.attr.id;
 
 public class MainActivity extends AppCompatActivity {
 
-    public Button one, two, three, four, five, six, seven, eight, nine, dot, zero, equals,  delete, divide, multiply, minus, plus;
-    public TextView input1, input2;
-    Double c;
-    String a, b;
+    //Ids of all numeric buttons
+    private int[] numericbuttons = {R.id.one, R.id.two, R.id.three, R.id.four, R.id.five, R.id.six, R.id.seven, R.id.eight, R.id.nine, R.id.zero};
+
+    //Ids of all operator buttons
+    private int[] operatorbuttons = {R.id.plus, R.id.minus, R.id.multiply, R.id.divide};
+
+    //TextView for output
+    private TextView output1, output2;
+
+    //Checks whether last key is numeric or not
+    private boolean lastNumeric;
+
+    //Checks whether current state is in error or not
+    private boolean stateError;
+
+    //If true, donot allow another dot as input
+    private boolean lastDot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        //Initialization method initialized onCreate
-        init();
-
-        input();
-
-        operation();
-
-
+        
+        //Find textView to display output
+        output1 = (TextView) findViewById(R.id.output1);
+        output2 = (TextView) findViewById(R.id.output2);
+        // Find and set OnClickListener to numeric buttons
+        setNumericOnClickListener();
+        // Find and set OnClickListener to operator buttons, equal button and decimal point button
+        setOperatorOnClickListener();
+        
 
     }
 
-    /*private void checkDot() {
+    private void setNumericOnClickListener() {
+        View.OnClickListener listener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Button button = (Button) v;
+                if(stateError){
+                    output2.setText(button.getText());
+                    stateError = false;
+                }
+                else {
+                    output2.append(button.getText());
+                }
 
-        char last = a.charAt(a.length()-1);
-        if(last == '.'){
-            a+=0;
+                lastNumeric = true;
+            }
+        };
+
+        for(int id : numericbuttons){
+            findViewById(id).setOnClickListener(listener);
         }
-    }*/
-
-    //Initializing widgets
-    private void init() {
-
-        equals = (Button) id(R.id.equals);
-        delete = (Button) id(R.id.delete);
-        divide = (Button) id(R.id.divide);
-        multiply = (Button) id(R.id.multiply);
-        minus = (Button) id(R.id.minus);
-        plus = (Button) id(R.id.plus);
-        input1 = (TextView) id(R.id.input1);
-        input2 = (TextView) id(R.id.input2);
-        one = (Button) id(R.id.one);
-        two = (Button) id(R.id.two);
-        three = (Button) id(R.id.three);
-        four = (Button) id(R.id.four);
-        five = (Button) id(R.id.five);
-        six = (Button) id(R.id.six);
-        seven = (Button) id(R.id.seven);
-        eight = (Button) id(R.id.eight);
-        nine = (Button) id(R.id.nine);
-        dot = (Button) id(R.id.dot);
-        zero = (Button) id(R.id.zero);
-        b = "";
     }
 
-    private String input() {
-
-
-        a = "";
-
-        one.setOnClickListener(new View.OnClickListener() {
+    private void setOperatorOnClickListener() {
+        View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                input1.setText(a + "1");
-                a = input1.getText().toString();
 
-            }
-        });
-
-        two.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                input1.setText(a + "2");
-                a = input1.getText().toString();
-
-            }
-        });
-
-        three.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                input1.setText(a + "3");
-                a = input1.getText().toString();
-
-            }
-        });
-
-        four.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                input1.setText(a + "4");
-                a = input1.getText().toString();
-
-            }
-        });
-
-        five.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                input1.setText(a + "5");
-                a = input1.getText().toString();
-
-            }
-        });
-
-        six.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                input1.setText(a + "6");
-                a = input1.getText().toString();
-
-            }
-        });
-
-        seven.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                input1.setText(a + "7");
-                a = input1.getText().toString();
-
-            }
-        });
-
-        eight.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                input1.setText(a + "8");
-                a = input1.getText().toString();
-
-            }
-        });
-
-        nine.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                input1.setText(a + "9");
-                a = input1.getText().toString();
-
-            }
-        });
-
-        zero.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                input1.setText(a + "0");
-                a = input1.getText().toString();
-
-            }
-        });
-
-        dot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                input1.setText(a + ".");
-                a = input1.getText().toString();
-
-            }
-        });
-
-            return a;
-    }
-
-
-        private void operation() {
-
-
-
-            plus.setOnClickListener(new View.OnClickListener() {
-
-                public void onClick(View v) {
-
-                    //checkDot();
-                    b = b + a + "+"; //To Store the first number displayed in textView  to aa
-                    input2.setText(b);
-                    input1.setText(input());
-                    a = input1.getText().toString();
-
-
-
+                if(lastNumeric && !stateError){
+                    Button button = (Button) v;
+                    output2.append(button.getText());
+                    lastNumeric = false;
+                    lastDot = false;
                 }
-            });
+            }
+        };
 
-            delete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    if(a != "") {
-
-                        input1.setText(a.replace(a.substring(a.length() - 1), ""));
-                        a = input1.getText().toString();
-                    }
-
-                    else{
-
-                        a = input2.getText().toString();
-                        input2.setText("");
-                        input1.setText(a);
-                        input1.setText(a.replace(a.substring(a.length() - 1), ""));
-                        a = input1.getText().toString();
-                    }
-                }
-            });
-
-            equals.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    c = Double.parseDouble(String.valueOf(b)) + Double.parseDouble(String.valueOf(a));
-                    a = c.toString();
-                    input2.setText("");
-                    input1.setText(c.toString());
-                }
-            });
-
+        for(int id : operatorbuttons){
+            findViewById(id).setOnClickListener(listener);
         }
 
+        findViewById(R.id.dot).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(lastNumeric && !stateError && !lastDot){
+                    output2.append(".");
+                    lastNumeric = false;
+                    lastDot = true;
+                }
+            }
+        });
 
+        findViewById(R.id.delete).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                output1.setText("");
+                output2.setText("");
+                lastNumeric = false;
+                lastDot = false;
+                stateError = false;
+            }
+        });
 
-    //Returns findViewById with just using id
-    private View id(int id){
-        return findViewById(id);
+        findViewById(R.id.equals).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onEqual();
+            }
+        });
     }
 
+    private void onEqual() {
 
+        if(lastNumeric && !stateError){
+            String txt = output2.getText().toString();
 
+            Expression  expression = new ExpressionBuilder(txt).build();
+
+            try{
+                double result = expression.evaluate();
+                output1.setText(Double.toString(result));
+                lastDot = true;
+            }
+            catch (ArithmeticException e){
+                output1.setText("Error");
+                stateError = true;
+                lastNumeric = false;
+            }
+
+        }
+    }
 }
+
+
+
+
