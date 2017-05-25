@@ -10,7 +10,8 @@
         android:id="@+id/output2"
         android:layout_width="match_parent"
         android:layout_height="63dp"
-        android:background="#ffd9d9"
+        android:background="#ffffff"
+        android:textColor="@android:color/background_dark"
         android:gravity="center|end"
         android:textSize="25dp"/>
 
@@ -19,7 +20,7 @@
         android:layout_below="@+id/output2"
         android:layout_width="match_parent"
         android:layout_height="63dp"
-        android:background="#ffd9d9"
+        android:background="#ffffff"
         android:gravity="bottom|end"
         android:textSize="40dp"/>
 
@@ -27,7 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/output1"
-        android:background="#113833"
+        android:background="@drawable/maths"
         android:gravity="center">
 
 
